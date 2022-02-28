@@ -1,0 +1,45 @@
+.post-card:hover{
+    transform: translateY(-5px); 
+    transition: .2s ease;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.082) !important;
+
+}
+
+.img-hover{
+    overflow: hidden;
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+.img-hover img {
+    width: 105%;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    left: -5%;
+    transition: all 0.3s;
+}
+  
+  
+  
+.img-hover .hover-overlay { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    transition: all 0.4s;
+
+    background-image: linear-gradient(rgba(0, 0, 0, 0.144) 50%, rgba(0, 0, 0, 0.596));
+    width: 200px;
+    height: 200px;
+}
+  
+  
+  
+.img-hover:hover img {
+    left: 0;
+}
+  
+.img-hover:hover .hover-overlay {
+    opacity: 0;
+}
