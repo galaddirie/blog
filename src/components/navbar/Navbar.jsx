@@ -38,10 +38,10 @@ class BlogNav extends Component {
                                 <Link className="nav-link p-0" to={`/`}> Home </Link>
                                 <div className="item-hover-underline"></div>
                             </NavItem>
-                            <NavItem className="item-underline-container me-3">
+                            {/* <NavItem className="item-underline-container me-3">
                                 <Link className="nav-link p-0" to={`/tutorials`}>Tutorials</Link>
                                 <div className="item-hover-underline"></div>
-                            </NavItem>
+                            </NavItem> */}
                             <NavItem className="item-underline-container me-3">
                                 <Link className="nav-link p-0" to={`/blog`}>Blog</Link>
                                 <div className="item-hover-underline"></div>
@@ -51,7 +51,7 @@ class BlogNav extends Component {
                                 <div className="item-hover-underline"></div>
                             </NavItem>
                             <NavItem className="item-underline-container me-3">
-                                <Link className="nav-link p-0" to={`/shop`}>shop</Link>
+                                <a href='https://im-galad.gumroad.com/' className="nav-link p-0">shop</a>
                                 <div className="item-hover-underline"></div>
                             </NavItem>
 
