@@ -8,12 +8,13 @@
 .img-hover{
     overflow: hidden;
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width: 250px;
+    height: 250px;
 }
 .img-hover img {
     width: 105%;
-    height: 200px;
+    height: 250px;
     position: absolute;
     top: 0;
     left: -5%;
@@ -30,8 +31,8 @@
     transition: all 0.4s;
 
     background-image: linear-gradient(rgba(0, 0, 0, 0.144) 50%, rgba(0, 0, 0, 0.596));
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
 }
   
   
@@ -42,4 +43,17 @@
   
 .img-hover:hover .hover-overlay {
     opacity: 0;
+}
+
+@media screen and (max-width: 992px) {
+    .img-hover{
+        max-width: 100%;
+    }
+    .img-hover img {
+        width: 105%;
+        height: auto;
+    }
+    .img-hover .hover-overlay{
+        width: 100%;
+    }
 }
