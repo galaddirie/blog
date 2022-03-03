@@ -1,9 +1,10 @@
 import Footer from "./components/Footer/Footer";
-import Home from "./components/pages/Home/Home";
+
 import BlogNav from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Route, Routes, Link, } from "react-router-dom";
-import BlogList from "./components/pages/BlogList/BlogList";
-import BlogArticle from "./components/pages/BlogList/BlogArticle";
+import Home from "./pages/Home/Home";
+import BlogList from "./pages/BlogList/BlogList";
+import BlogArticle from "./pages/BlogList/BlogArticle";
 function Tuts() {
   return (
     <h3>tuts</h3>

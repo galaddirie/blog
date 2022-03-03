@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Container } from 'react-bootstrap'
-import { FeaturePostLarge, PostCard } from '../../Posts/Post'
+import { FeaturePostLarge, PostCard } from '../../components/Posts/Post'
 import './blog.css'
 
 

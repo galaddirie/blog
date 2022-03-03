@@ -1,7 +1,7 @@
 import './home.css'
 import React, { Component, useEffect } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { FeaturedPosts } from '../../Posts/Post';
+import { FeaturedPosts } from '../../components/Posts/Post';
 import { ReactComponent as YourSvg } from './logoeyes.svg';
 import { Link } from 'react-router-dom';
 function HeroLogo() {

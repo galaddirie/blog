@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { Container, } from 'react-bootstrap'
 import $ from 'jquery'
-import { PostCard } from '../../Posts/Post';
+import { PostCard } from '../../components/Posts/Post';
+
 function TableOfContent() {
 
     useEffect(() => {
