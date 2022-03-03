@@ -91,7 +91,7 @@ function Hero() {
                                     <p className="lead fw-normal mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world's most popular front-end open source toolkit!</p>
                                     <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
                                         <Link to={`/tutorials`}><Button size='lg' variant="dark" className="px-4 me-sm-3" href="/tutorials">Tutorials</Button></Link>
-                                        <Link to={`/shop`}><Button size='lg' variant='outline-dark' className="px-4 me-sm-3">Shop</Button></Link>
+                                        <a href='https://im-galad.gumroad.com/'><Button size='lg' variant='outline-dark' className="px-4 me-sm-3">Gumroad</Button></a>
                                     </div>
                                 </div>
                             </Col>
@@ -117,7 +117,7 @@ function Hero() {
 function MailingListCTA() {
     return (
         <Container>
-            <aside className="bg-dark text-light  rounded-3 p-4 p-sm-5 mt-5">
+            <aside className="bg-dark text-light  rounded-3 p-4 p-sm-5 my-5">
                 <div className="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start">
                     <div className="mb-4 mb-xl-0">
                         <div className="fs-3 fw-bold ">Subscribe to My Newsletter</div>
