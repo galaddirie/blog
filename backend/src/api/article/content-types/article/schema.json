@@ -17,14 +17,11 @@
       "required": true,
       "unique": true
     },
-    "created": {
-      "type": "date",
-      "required": true
-    },
     "author": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::author.author"
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "articles"
     },
     "cover": {
       "type": "media",
@@ -48,6 +45,18 @@
       "relation": "manyToMany",
       "target": "api::tag.tag",
       "inversedBy": "articles"
+    },
+    "feature": {
+      "type": "boolean"
+    },
+    "primary_article": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::primary-article.primary-article",
+      "inversedBy": "article"
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }

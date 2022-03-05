@@ -35,6 +35,12 @@
       "relation": "oneToOne",
       "target": "admin::user",
       "private": true
+    },
+    "articles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article",
+      "mappedBy": "author"
     }
   }
 }

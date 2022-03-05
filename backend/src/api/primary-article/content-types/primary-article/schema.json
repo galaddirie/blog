@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "primary_articles",
+  "info": {
+    "singularName": "primary-article",
+    "pluralName": "primary-articles",
+    "displayName": "Primary Article"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "article": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::article.article",
+      "mappedBy": "primary_article"
+    }
+  }
+}
