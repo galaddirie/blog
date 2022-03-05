@@ -3,45 +3,52 @@ import React, { Component } from 'react'
 
 import { Container, Row, Col, Card, CardImg, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 
 Card.Tag = ({ children }) => {
     return (
-        <div className="badge bg-gradient rounded-pill mb-2 me-2" style={{ 'background-color': '#FF2867', }}>{children}</div>
+        <div className="badge bg-gradient rounded-pill mb-2 me-2" style={{ 'backgroundColor': '#FF2867', }}>{children}</div>
     )
 }
 
 function Author() {
     return (
         <div className="d-flex align-items-center">
-            <Link to={`/user`}><img className="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="user icon" width={40} height={40} /></Link>
+            <Link to={`/user`}><img className="rounded-circle me-3" src={`/img/naruto.jpg`} alt="user icon" width={40} height={40} /></Link>
             <div className="small">
                 <Link to={`/user`}><div className="fw-bold">Galad</div></Link>
-                <div className="text-muted">March 12, 2021 &middot; 6 min read</div>
+                <div className="text-muted">March 12, 2021</div>
             </div>
         </div>
     )
 }
 
-function FeaturedPostCard() {
+function FeaturedPostCard(props) {
+    var post = props.data
     return (
         <Col lg={4} className="mb-5 d-block">
             <Card className="h-100 shadow border-0 post-card" >
-                <Link to={`/post`}>
-                    <CardImg className="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="post cover picture" width={'100%'} height={'100%'} />
+                <Link to={`/post/${post.slug}`}>
+                    <div className="card-img-container">
+                        <CardImg className="card-img-top" src={`${'http://localhost:1337' + post.cover.data.attributes.url}`} alt="post cover picture" />
+                    </div>
+
                 </Link>
                 <Card.Body className="p-4">
                     <div className='tag-container'>
-                        <Card.Tag>News</Card.Tag>
+                        {post.tags.data.map((tag) => {
+                            return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                        })}
                     </div>
                     <div>
                         {/* <a className="text-decoration-none link-dark stretched-link" href="#!"></a> */}
-                        <Link className="link-primary" to={`/blog`}><h5 className="card-title mb-3 ">Blog post title</h5></Link>
+                        <Link className="link-primary" to={`/post/${post.slug}`}><h5 className="card-title mb-3 ">{post.title}</h5></Link>
                     </div>
 
                     <p className="card-text mb-0">
-                        Some quick example text to build on the card title and make up the bulk of the card's content.
-                        <Link to={`/post`} className="stretched-link text-decoration-none ms-3">
+                        {post.blurb}
+                        <Link to={`/post/${post.slug}`} className="stretched-link text-decoration-none ms-3">
                             Read more
                             <i className="bi bi-arrow-right"></i>
                         </Link>
@@ -59,24 +66,28 @@ function FeaturedPostCard() {
         </Col>
     )
 }
-function FeaturePostLarge() {
+function FeaturePostLarge(props) {
+    var post = props.data.article.data.attributes
     return (
         <Card className="border-0 shadow rounded-3 overflow-hidden">
             <Card.Body className="p-0">
                 <Row className="gx-0">
                     <Col lg={6} xl={5} className="py-lg-5">
                         <div className="p-4 p-md-5">
-                            <Card.Tag>News</Card.Tag>
-                            <div className="h2 fw-bolder">Article heading goes here</div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique delectus ab doloremque, qui doloribus ea officiis...</p>
-                            <Link className="stretched-link text-decoration-none" to={'/post'}>
+                            {post.tags.data.map((tag) => {
+                                return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                            })}
+                            <div className="h2 fw-bolder">{post.title}</div>
+                            <p>{post.blurb}</p>
+                            <Link className="stretched-link text-decoration-none" to={`/post/${post.slug}`}>
                                 Read more
                                 <i className="bi bi-arrow-right"></i>
                             </Link>
                         </div>
                     </Col>
                     <Col lg={6} xl={7}>
-                        <div className="bg-featured-blog" style={{ backgroundImage: 'url(./img/test.jpg)' }}></div>
+                        {/* ${props.data.attributes.article.data.attributes.cover.data.attributes.url} */}
+                        <div className="bg-featured-blog" style={{ backgroundImage: `url(http://localhost:1337${post.cover.data.attributes.url} )` }}></div>
                     </Col>
                 </Row>
             </Card.Body>
@@ -84,7 +95,8 @@ function FeaturePostLarge() {
 
     )
 }
-function PostCard() {
+function PostCard(props) {
+
     return (
         <>
             <Card className="border-1 shadow" style={{ overflow: 'hidden' }}>
@@ -93,25 +105,29 @@ function PostCard() {
                 <Row className="post-preview">
 
                     <Col aria-modal={2} className="img-hover text-white px-lg-0">
-                        <img src="https://res.cloudinary.com/mhmd/image/upload/v1570786261/hoverSet-3_usk5ml.jpg" alt="" />
+                        <img src={'http://localhost:1337' + props.data.cover.data.attributes.url} alt="" />
                         <div className="hover-overlay"></div>
                     </Col>
                     <Col lg={9} className="">
                         <Card.Body>
                             <div className='tag-container'>
-                                <Card.Tag>News</Card.Tag>
+                                {props.data.tags.data.map((tag) => {
+                                    return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                                })}
+
                             </div>
-                            <Link to="/post" className="link-dark">
-                                <h2 className="post-title">Article heading goes here</h2>
+                            <Link to={`/post/${props.data.slug}`} className="link-dark">
+                                <h2 className="post-title">{props.data.title}</h2>
                             </Link>
 
                             <div>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores qui, minima labore quae unde omnis, blanditiis natus voluptates iure quam alias corporis veritatis esse ratione, cum officiis laudantium. Aut, saepe.
+                                {props.data.blurb}
 
                             </div>
-                            <p className="post-meta mt-2">
+                            <div className="post-meta mt-2">
                                 <Author />
-                            </p>
+
+                            </div>
 
                         </Card.Body>
 
@@ -122,7 +138,7 @@ function PostCard() {
                 </Row>
 
             </Card>
-            <hr class="my-4" />
+            <hr className="my-4" />
         </>
 
 
@@ -130,6 +146,9 @@ function PostCard() {
 }
 
 function FeaturedPosts() {
+    const { loading, error, data } = useFetch('http://localhost:1337/api/articles?&populate=%2A') // TODO FIX this
+    if (loading) return (<Container><p>Loading...</p></Container>)
+    if (error) return (<p>error</p>)
     return (
         <section className="pb-5">
             <Container className="px-5 my-5">
@@ -141,9 +160,11 @@ function FeaturedPosts() {
                     </Col>
                 </Row>
                 <Row className="gx-5">
-                    <FeaturedPostCard />
-                    <FeaturedPostCard />
-                    <FeaturedPostCard />
+                    {data.data.map((post) => {
+
+                        return < FeaturedPostCard key={post.id} data={post.attributes} />
+                    })}
+
                 </Row>
 
 
@@ -161,4 +182,4 @@ export default class Post extends Component {
     }
 }
 
-export { Post, FeaturedPosts, FeaturedPostCard, FeaturePostLarge, PostCard }
+export { Post, FeaturedPosts, FeaturedPostCard, FeaturePostLarge, PostCard, Author }
