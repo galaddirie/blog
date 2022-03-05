@@ -18,7 +18,7 @@ class BlogNav extends Component {
 
             <Navbar collapseOnSelect expand="lg" variant="light">
                 <Container fluid className="d-flex mx-0" >
-                    <Navbar.Brand><Link className="nav-link " to={`/`}><img width={40} height={40} src={"img/logo.svg"} alt={"im galad logo"} />[im_galad]</Link></Navbar.Brand>
+                    <Navbar.Brand><Link className="nav-link " to={`/`}><img width={40} height={40} src={"/img/logo.svg"} alt={"im galad logo"} />[im_galad]</Link></Navbar.Brand>
 
                     <Navbar className="order-lg-1 ms-auto me-3 d-flex">
                         <Nav className="nav-icon-container" >
