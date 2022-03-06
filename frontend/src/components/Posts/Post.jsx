@@ -3,22 +3,25 @@ import React, { Component } from 'react'
 
 import { Container, Row, Col, Card, CardImg, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import { useQuery, gql } from "@apollo/client";
 
 
-Card.Tag = ({ children }) => {
+Card.Tag = (prop) => {
+    const tag = prop.data
     return (
-        <div className="badge bg-gradient rounded-pill mb-2 me-2" style={{ 'backgroundColor': '#FF2867', }}>{children}</div>
+        <Link to={`${/tag/ + tag.attributes.value}`} >
+            <div className="badge bg-gradient rounded-pill mb-2 me-2" style={{ 'backgroundColor': '#FF2867', }}>{tag.attributes.name}</div>
+        </Link>
     )
 }
 
-function Author() {
+function Author({ date }) {
     return (
         <div className="d-flex align-items-center">
             <Link to={`/user`}><img className="rounded-circle me-3" src={`/img/naruto.jpg`} alt="user icon" width={40} height={40} /></Link>
             <div className="small">
                 <Link to={`/user`}><div className="fw-bold">Galad</div></Link>
-                <div className="text-muted">March 12, 2021</div>
+                <div className="text-muted">{date}</div>
             </div>
         </div>
     )
@@ -26,11 +29,12 @@ function Author() {
 
 function FeaturedPostCard(props) {
     var post = props.data
+    console.log(post)
     return (
         <Col lg={4} className="mb-5 d-block">
             <Card className="h-100 shadow border-0 post-card" >
                 <Link to={`/post/${post.slug}`}>
-                    <div className="card-img-container">
+                    <div className="featured-card-img-container">
                         <CardImg className="card-img-top" src={`${'http://localhost:1337' + post.cover.data.attributes.url}`} alt="post cover picture" />
                     </div>
 
@@ -38,17 +42,17 @@ function FeaturedPostCard(props) {
                 <Card.Body className="p-4">
                     <div className='tag-container'>
                         {post.tags.data.map((tag) => {
-                            return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                            return <Card.Tag key={tag.attributes.value} data={tag} />
                         })}
                     </div>
                     <div>
                         {/* <a className="text-decoration-none link-dark stretched-link" href="#!"></a> */}
-                        <Link className="link-primary" to={`/post/${post.slug}`}><h5 className="card-title mb-3 ">{post.title}</h5></Link>
+                        <Link className="link-dark text-decoration-none" to={`/post/${post.slug}`}><h5 className="card-title mb-3 ">{post.title}</h5></Link>
                     </div>
 
                     <p className="card-text mb-0">
                         {post.blurb}
-                        <Link to={`/post/${post.slug}`} className="stretched-link text-decoration-none ms-3">
+                        <Link to={`/post/${post.slug}`} className=" text-decoration-none ms-3">
                             Read more
                             <i className="bi bi-arrow-right"></i>
                         </Link>
@@ -58,12 +62,12 @@ function FeaturedPostCard(props) {
 
                 <Card.Footer className="p-4 pt-0 bg-transparent border-top-0">
                     <div className="d-flex align-items-end justify-content-between">
-                        <Author />
+                        <Author date={post.createdAt} />
 
                     </div>
                 </Card.Footer>
             </Card>
-        </Col>
+        </Col >
     )
 }
 function FeaturePostLarge(props) {
@@ -75,19 +79,23 @@ function FeaturePostLarge(props) {
                     <Col lg={6} xl={5} className="py-lg-5">
                         <div className="p-4 p-md-5">
                             {post.tags.data.map((tag) => {
-                                return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                                return <Card.Tag key={tag.attributes.value} data={tag} />
                             })}
-                            <div className="h2 fw-bolder">{post.title}</div>
-                            <p>{post.blurb}</p>
-                            <Link className="stretched-link text-decoration-none" to={`/post/${post.slug}`}>
+                            <div>
+                                <Link to={`/post/${post.slug}`} className="h2 fw-bolder text-decoration-none text-dark">{post.title}</Link>
+                            </div>
+                            <div>{post.blurb}</div>
+                            <Link className="text-decoration-none" to={`/post/${post.slug}`}>
                                 Read more
                                 <i className="bi bi-arrow-right"></i>
                             </Link>
                         </div>
                     </Col>
                     <Col lg={6} xl={7}>
-                        {/* ${props.data.attributes.article.data.attributes.cover.data.attributes.url} */}
-                        <div className="bg-featured-blog" style={{ backgroundImage: `url(http://localhost:1337${post.cover.data.attributes.url} )` }}></div>
+                        <Link to={`/post/${post.slug}`}>
+                            {/* ${props.data.attributes.article.data.attributes.cover.data.attributes.url} */}
+                            <div className="bg-featured-blog" style={{ backgroundImage: `url(http://localhost:1337${post.cover.data.attributes.url} )` }}></div>
+                        </Link>
                     </Col>
                 </Row>
             </Card.Body>
@@ -112,12 +120,12 @@ function PostCard(props) {
                         <Card.Body>
                             <div className='tag-container'>
                                 {props.data.tags.data.map((tag) => {
-                                    return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                                    return <Card.Tag key={tag.attributes.value} data={tag} />
                                 })}
 
                             </div>
-                            <Link to={`/post/${props.data.slug}`} className="link-dark">
-                                <h2 className="post-title">{props.data.title}</h2>
+                            <Link to={`/post/${props.data.slug}`} className="link-dark text-decoration-none">
+                                <h3 className="post-title">{props.data.title}</h3>
                             </Link>
 
                             <div>
@@ -125,7 +133,7 @@ function PostCard(props) {
 
                             </div>
                             <div className="post-meta mt-2">
-                                <Author />
+                                <Author date={props.data.createdAt} />
 
                             </div>
 
@@ -145,8 +153,53 @@ function PostCard(props) {
     )
 }
 
+const ARTICLES = gql`
+query getArticle{
+  articles(filters:{feature:{eq:true}}){
+        data{
+            id
+            attributes{
+                createdAt
+                slug
+                title
+                blurb
+                feature
+                author{
+                    data{
+                        attributes{
+                            name
+                            image{
+                                data{
+                                    attributes{
+                                        url
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                tags{
+                    data{
+                        attributes{
+                            name
+                            value
+                        }
+                    }
+                }
+                cover{
+                    data{
+                        attributes{
+                            url
+                        }
+                    }
+                }
+            }
+        }  
+    }
+}
+`
 function FeaturedPosts() {
-    const { loading, error, data } = useFetch('http://localhost:1337/api/articles?&populate=%2A') // TODO FIX this
+    const { loading, error, data } = useQuery(ARTICLES) // TODO FIX this
     if (loading) return (<Container><p>Loading...</p></Container>)
     if (error) return (<p>error</p>)
     return (
@@ -160,7 +213,7 @@ function FeaturedPosts() {
                     </Col>
                 </Row>
                 <Row className="gx-5">
-                    {data.data.map((post) => {
+                    {data.articles.data.map((post) => {
 
                         return < FeaturedPostCard key={post.id} data={post.attributes} />
                     })}

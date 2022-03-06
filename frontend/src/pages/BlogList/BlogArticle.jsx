@@ -12,6 +12,7 @@ query getArticle($slug: String!){
         data{
             id
             attributes{
+                createdAt
                 title
                 body
                 blurb
@@ -200,12 +201,12 @@ export default function BlogArticle() {
 
                                 <h1 className="fw-bolder mb-1">{post.title}</h1>
 
-                                <Author className="mt-lg-5 mb-4" />
+                                <Author date={post.createdAt} className="mt-lg-5 mb-4" />
 
                             </header>
                             <div className='tag-container'>
                                 {post.tags.data.map((tag) => {
-                                    return <Card.Tag key={tag.attributes.value} >{tag.attributes.name}</Card.Tag>
+                                    return <Card.Tag key={tag.attributes.value} data={tag} />
                                 })}
                             </div>
                             <figure className="mb-4"><img className="img-fluid rounded" src={`http://localhost:1337${post.cover.data.attributes.url}`} alt="..." width={'100%'} /></figure>

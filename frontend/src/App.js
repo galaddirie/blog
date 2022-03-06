@@ -4,7 +4,7 @@ import BlogNav from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Route, Routes, Link, } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
 import Home from "./pages/Home/Home";
-import BlogList from "./pages/BlogList/BlogList";
+import { BlogList, ArticlesFromTags } from "./pages/BlogList/BlogList";
 import BlogArticle from "./pages/BlogList/BlogArticle";
 function Tuts() {
   return (
@@ -28,7 +28,7 @@ function App() {
             <Route path='/tutorials' element={<Tuts />}></Route>
             <Route path='/blog' element={<BlogList />}></Route>
             <Route path='/post/:slug' element={<BlogArticle />}></Route>
-            <Route path='/tag/:value' element={<BlogArticle />}></Route>
+            <Route path='/tag/:value' element={<ArticlesFromTags />}></Route>
           </Routes>
           <Footer />
         </ApolloProvider>
