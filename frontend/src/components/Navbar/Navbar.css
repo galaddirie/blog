@@ -19,7 +19,7 @@
 }
 
 
-.active a{
+.active span  {
     color: #FF2867 !important;
 }
 
@@ -56,12 +56,13 @@
 }
 
 @media (max-width: 991px) {
+    
     .custom-nav-background {
         background-color: rgb(34, 34, 34);
     }
 
-    .navbar-collapse .nav-item{
-        border-bottom: 1px solid rgba(41, 41, 41, 0.479);
+    .navbar-collapse .nav-link span{
+        margin-left: 20px;
         
     }
 
@@ -80,4 +81,10 @@
         width: 0%;  
 
     }  
+}
+
+@media screen and (max-width: 350px) {
+    .navbar-brand span{
+        display: none;
+    }
 }
