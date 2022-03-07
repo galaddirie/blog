@@ -58,116 +58,57 @@ function TableOfContent() {
         /* SNIPPET https://codepen.io/GeoffreyCrofte/pen/xOPdLZ
         
          */
-        var positions = [],
-            build_toc = function () {
-                var output = "<p>Table of content</p><ul class='sticky'>",
-                    svg = '<svg viewBox="0 0 36 36" height="36px" width="36px" y="0px" x="0px"><circle transform="rotate(-90 18 18)" stroke-dashoffset="100" stroke-dasharray="100 100" r="16" cy="18" cx="18" stroke-width="2" fill="none"/></svg>';
 
-                $('.post-content').find('h2').each(function (i) {
-                    $(this).attr('id', 'title_' + i)
+        var toc = function () {
+            var toc = "";
+            var level = 0;
+            var maxLevel = 3;
 
-                    output += '<li><a href="#title_' + i + '" className="toc-title_' + i + '">' + svg + $(this).text() + '</a></li>';
-                });
+            document.getElementById("contents").innerHTML =
+                document.getElementById("contents").innerHTML.replace(
+                    /<h([\d])>([^<]+)<\/h([\d])>/gi,
+                    function (str, openLevel, titleText, closeLevel) {
+                        if (openLevel != closeLevel) {
 
-                return output;
-            },
-            get_bottom_off_content = function () {
-                var $content = $('.post-content'),
-                    offset = $content.offset();
+                            return str + ' - ' + openLevel;
+                        }
 
-                return $content.outerHeight() + offset.top;
-            },
-            get_positions = function () {
-                $('.post-content').find('h2').each(function (i) {
-                    var offset = $(this).offset();
-                    positions['title_' + i] = offset.top - 20;
-                });
-                return positions;
-            },
-            set_toc_reading = function () {
-                var st = $(document).scrollTop(),
-                    count = 0;
+                        if (openLevel > level) {
+                            toc += (new Array(openLevel - level + 1)).join("<ol>");
+                        } else if (openLevel < level) {
+                            toc += (new Array(level - openLevel + 1)).join("</ol>");
+                        }
 
-                for (var k in positions) {
-                    var n = parseInt(k.replace('title_', ''));
-                    var has_next = typeof positions['title_' + (n + 1)] !== 'undefined',
-                        not_next = has_next && st < positions['title_' + (n + 1)] ? true : false,
-                        diff = 0,
-                        $link = $('.toc-' + k);
+                        level = parseInt(openLevel);
 
-                    if (has_next) {
-                        diff = (st - positions[k]) / (positions['title_' + (n + 1)] - positions[k]) * 100;
-                    } else {
-                        diff = (st - positions[k]) / (get_bottom_off_content() - positions[k]) * 100;
+                        var anchor = titleText.replace(/[^0-9a-z]/gi, "-").replace(/^[^a-z\d]*|[^a-z\d]*$/gi, '');
+                        toc += "<li><a href=\"#" + anchor.toLowerCase() + "\">" + titleText
+                            + "</a></li>";
+
+                        return "<h" + openLevel + ` id=${anchor.toLowerCase()} name=${anchor.toLowerCase()}>`
+                            + titleText + "</h" + closeLevel + ">";
                     }
+                );
 
-                    $link.find('circle').attr('stroke-dashoffset', Math.round(100 - diff));
-
-                    if (st >= positions[k] && not_next && has_next) {
-                        $('.toc-' + k).addClass('toc-reading');
-                    } else if (st >= positions[k] && !not_next && has_next) {
-                        $('.toc-' + k).removeClass('toc-reading');
-                    } else if (st >= positions[k] && !not_next && !has_next) {
-                        $('.toc-' + k).addClass('toc-reading');
-                    }
-
-                    if (st >= positions[k]) {
-                        $('.toc-' + k).addClass('toc-already-read');
-                    } else {
-                        $('.toc-' + k).removeClass('toc-already-read');
-                    }
-
-                    if (st < positions[k]) {
-                        $('.toc-' + k).removeClass('toc-already-read toc-reading');
-                    }
-
-                    count++;
-                }
-            };
-
-        // build our table of content
-        $('.table-of-contents').html(build_toc());
-
-        // first definition of positions
-        get_positions();
-
-
-
-        var stickEl = $('.sticky'),
-            stickyElTop = stickEl.offset().top;
-
-        var sticky = function () {
-            var scrollTop = $(window).scrollTop();
-
-            if (stickyElTop < scrollTop + 20) {
-                stickEl.addClass('is-fixed');
-            } else {
-                stickEl.removeClass('is-fixed');
+            if (level) {
+                toc += (new Array(level + 1)).join("</ol>");
             }
+
+            document.getElementById("toc").innerHTML += toc;
         };
-        var addListeners = () => {
 
-            $(window).on('scroll', function () {
-                sticky();
-            });
-        }
+        toc()
 
-        addListeners();
+    });
 
-        return () => {
-
-        };
-    }, []);
     return (
         <div className='table-of-contents-container py-4'>
-            <aside className="table-of-contents px-3 sidebar">
-
+            <aside id="toc" className="sidebar table-of-contents bg-light">
+                <h2>Table of Contents</h2>
 
             </aside>
 
         </div>
-
-
     )
 
 }
@@ -189,47 +130,49 @@ export default function BlogArticle() {
         <Container className='py-5'>
 
             <section className="">
-                <Row>
-                    <Col xl={3}>
-                        <TableOfContent />
-                    </Col>
-                    <Col xl={9}>
 
-                        <article className='post-content'>
+                <Row className=''>
+
+
+
+                    <Col xl={8} className="d-flex justify-content-center mx-auto">
+                        <article className='post-content '>
 
                             <header className="mb-4">
 
                                 <h1 className="fw-bolder mb-1">{post.title}</h1>
-
+                                <div className='tag-container'>
+                                    {post.tags.data.map((tag) => {
+                                        return <Card.Tag key={tag.attributes.value} data={tag} />
+                                    })}
+                                </div>
                                 <Author date={post.createdAt} className="mt-lg-5 mb-4" />
 
                             </header>
-                            <div className='tag-container'>
-                                {post.tags.data.map((tag) => {
-                                    return <Card.Tag key={tag.attributes.value} data={tag} />
-                                })}
-                            </div>
-                            <figure className="mb-4"><img className="img-fluid rounded" src={`http://localhost:1337${post.cover.data.attributes.url}`} alt="..." width={'100%'} /></figure>
 
-                            <section className="mb-5">
-                                <ReactMarkdown children={`${post.body}`} />
+                            <figure className="mb-4"><img className="img-fluid rounded" src={`http://localhost:1337${post.cover.data.attributes.url}`} alt="..." width={'100%'} /></figure>
+                            <TableOfContent />
+                            <section id="contents" className="mb-5 article-content">
+                                <ReactMarkdown
+                                    children={`${post.body}`}
+                                    transformImageUri={uri =>
+                                        uri.startsWith("http") ? uri : `http://localhost:1337${uri}`
+                                    }
+                                />
                             </section>
                         </article>
-
-
                     </Col>
                 </Row>
             </section>
 
             <section className='article-footer'>
                 <Row>
-                    <Col xl={3}></Col>
-                    <Col xl={9} className='comment-section bg-light'></Col>
+                    {/* <Col xl={1}></Col> */}
+                    <Col xl={12} className='comment-section bg-light'></Col>
                 </Row>
             </section>
 
 
         </Container>
-
     )
 }
