@@ -140,6 +140,10 @@
     opacity: 1;
 }
 
+.badge:hover{
+    background-color: rgb(253, 0, 76) !important;
+}
+
 @media (min-width: 640px) {
     .blog-card {
         flex-direction: row;
