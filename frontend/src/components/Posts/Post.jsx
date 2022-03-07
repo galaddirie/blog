@@ -16,12 +16,14 @@ Card.Tag = (prop) => {
 }
 
 function Author({ date }) {
+    var d = new Date(date)
+
     return (
         <div className="d-flex align-items-center">
-            <Link to={`/user`}><img className="rounded-circle me-3" src={`/img/naruto.jpg`} alt="user icon" width={40} height={40} /></Link>
+            <Link to={`/user/galad`}><img className="rounded-circle me-3" src={`/img/naruto.jpg`} alt="user icon" width={40} height={40} /></Link>
             <div className="small">
-                <Link to={`/user`}><div className="fw-bold">Galad</div></Link>
-                <div className="text-muted">{date}</div>
+                <Link to={`/user/galad`}><div className="fw-bold">Galad</div></Link>
+                <div className="text-muted">{d.toDateString()}</div>
             </div>
         </div>
     )
@@ -103,7 +105,7 @@ function FeaturePostLarge(props) {
 
     )
 }
-function PostCard(props) {
+function PostCardOld(props) {
 
     return (
         <>
@@ -150,6 +152,37 @@ function PostCard(props) {
         </>
 
 
+    )
+}
+function PostCard(props) {
+    return (
+        <div class="blog-card my-4">
+            <div class="meta">
+                <Link className="text-decoration-none" to={`/post/${props.data.slug}`}>
+                    <div class="photo" style={{ backgroundImage: `url(${'http://localhost:1337' + props.data.cover.data.attributes.url})` }}></div>
+                </Link>
+
+            </div>
+            <div class="description">
+                <div className='tag-container'>
+                    {props.data.tags.data.map((tag) => {
+                        return <Card.Tag key={tag.attributes.value} data={tag} />
+                    })}
+
+                </div>
+                <Link className="text-decoration-none link-dark" to={`/post/${props.data.slug}`}><h3>{props.data.title}</h3></Link>
+
+                <div>
+                    {props.data.blurb}
+
+                </div>
+                <Link className="text-decoration-none" to={`/post/${props.data.slug}`}>
+                    Read more
+                    <i className="bi bi-arrow-right"></i>
+                </Link>
+
+            </div>
+        </div>
     )
 }
 
